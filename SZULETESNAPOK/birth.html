@@ -1,17 +1,89 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hu">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Szülcsinapcsi</title>
-    <link rel="stylesheet" href="birth.css">
+  <meta charset="UTF-8">
+  <title>Születésnapok</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    input, button {
+      padding: 8px;
+      margin-top: 10px;
+    }
+    #eredmeny {
+      margin-top: 20px;
+    }
+  </style>
 </head>
 <body>
-    <section>
-        <h1>Ma</h1>
-        <h1><i id="person">senki nem</i></h1>
-        <h2>ünnepli a szülinapját</h2>
-    </section>
-    <script src="birth.js"></script>
+
+  <h1>Születésnapok</h1>
+
+  <input type="file" id="csvInput" accept=".csv"><br>
+  <button onclick="ellenorizMa()">Ma van a születésnapjuk?</button><br><br>
+
+  <label for="datumValaszto">Válassz egy dátumot:</label>
+  <input type="date" id="datumValaszto" onchange="ellenorizDatum()"><br>
+
+  <div id="eredmeny"></div>
+
+  <script>
+    let szulAdatok = [];
+
+    // CSV beolvasása
+    document.getElementById('csvInput').addEventListener('change', function (e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const lines = e.target.result.split('\n').slice(1);
+        szulAdatok = lines.map(line => {
+          const [nev, datum] = line.trim().split(';');
+          return { nev, datum };
+        });
+        alert('CSV betöltve!');
+      };
+      reader.readAsText(file);
+    });
+
+    function ellenorizMa() {
+      const ma = new Date();
+      const honapNap = ${ma.getMonth() + 1}-${ma.getDate()};
+      const eredmeny = szulAdatok.filter(s => {
+        const d = new Date(s.datum);
+        return (d.getMonth() + 1) + '-' + d.getDate() === honapNap;
+      });
+
+      megjelenitEredmeny(eredmeny, ma);
+    }
+
+    function ellenorizDatum() {
+      const kivalasztott = new Date(document.getElementById('datumValaszto').value);
+      const honapNap = ${kivalasztott.getMonth() + 1}-${kivalasztott.getDate()};
+      const eredmeny = szulAdatok.filter(s => {
+        const d = new Date(s.datum);
+        return (d.getMonth() + 1) + '-' + d.getDate() === honapNap;
+      });
+
+      megjelenitEredmeny(eredmeny, kivalasztott);
+    }
+
+    function megjelenitEredmeny(lista, datum) {
+      const div = document.getElementById('eredmeny');
+      if (lista.length === 0) {
+        div.innerHTML = "<p>Senki nem született ezen a napon.</p>";
+      } else {
+        const ev = datum.getFullYear();
+        div.innerHTML = "<ul>" + lista.map(s => {
+          const szuletesiEv = new Date(s.datum).getFullYear();
+          const kor = ev - szuletesiEv;
+          return <li>${s.nev} (${kor}. születésnap)</li>;
+        }).join('') + "</ul>";
+      }
+    }
+  </script>
 </body>
 </html>
