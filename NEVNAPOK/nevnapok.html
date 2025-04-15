@@ -1,24 +1,24 @@
 <!DOCTYPE html>
 <html lang="hu">
 <head>
-  <meta charset="UTF-8">
-  <title>Névnapok</title>
-  <link rel="stylesheet" href="nevnapok.css">
-  <script src="nevnapok.js" defer></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Névnapok</title>
+    <link rel="stylesheet" href="nevnapok.css">
 </head>
 <body>
-  <h1>Névnap kereső</h1>
-  <form>
-    <label for="nev">Név:</label>
-    <input type="text" id="nev" name="nev">
+    <form>
+        <h1>Névnap cucc kombó</h1>
+        <sub>janky asf de mukodik :3</sub>
+        <label for="datum">Dátum</label>
+        <input type="date" name="datum" id="datum">
+        
+        <label for="keresztnev">Keresztnév</label>
+        <input type="text" name="keresztnev" id="keresztnev" placeholder="Pl. Bence">
+        <button id="keres">Keres</button>
+        <button id="aktualis">Aktuális névnap</button>
+    </form>
 
-    <label for="datum">Dátum:</label>
-    <input type="date" id="datum" name="datum">
-
-    <button type="button" id="keresGomb">Keres</button>
-    <button type="button" id="aktualisGomb">Aktuális névnap</button>
-  </form>
-
-  <div id="eredmeny"></div>
+    <script src="nevnapok.js"></script>
 </body>
 </html>
